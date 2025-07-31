@@ -1,0 +1,42 @@
+.digital-section {
+ background: linear-gradient(to right, #fff4e6, #ffe3e3); 
+  padding: 30px;
+}
+
+.text-part {
+
+  padding: 20px;
+}
+
+
+.text-part .highlight {
+  color: #f64100;
+  font-weight: 400;
+}
+
+.text-part p {
+  color: #555;
+  margin-top: 15px;
+}
+
+.text-part button {
+  margin-top: 30px;
+  background-color: #f64100;
+  color: white;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  width: 200px;
+}
+
+.image-part {
+  text-align: center;
+  padding: 20px;
+}
+
+.image-part img {
+  max-width: 70%;
+  max-height: 100%;
+  border-radius: 10px;
+}
