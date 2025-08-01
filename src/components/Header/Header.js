@@ -93,6 +93,28 @@ function Header() {
         )}
         {isUserExist() && (
           <div className="d-flex gap-2">
+            <Link
+              className="fw-semibold fs-6 me-4"
+              style={{
+                color: "black",
+                textDecoration: "none",
+                marginTop: "3px",
+              }}
+              to="/my-articles"
+            >
+              My Articles
+            </Link>{" "}
+            <Link
+              className="fw-semibold fs-6 me-4"
+              style={{
+                color: "black",
+                textDecoration: "none",
+                marginTop: "3px",
+              }}
+              to="/my-dialects"
+            >
+              My dialects
+            </Link>
             <img
               src={
                 "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCHU5JIkqfD2z1KMc4c1nW4zdArnxBM3cCcQ&s" ||

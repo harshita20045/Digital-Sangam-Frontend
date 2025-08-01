@@ -9,19 +9,37 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import PaletteIcon from "@mui/icons-material/Palette";
 import ImportContactsIcon from "@mui/icons-material/ImportContacts";
 import { GiThreeLeaves } from "react-icons/gi";
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
+import { Link, useNavigate } from "react-router-dom";
+
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
 function Story() {
   const [article, setArticle] = useState([]);
+  const [Filterarticle, setFilterArticle] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     loadArticles();
   }, []);
   const loadArticles = async () => {
     let response = await axios.get(EndPoint.all_articles);
-    console.log(response.data[1].images[0]);
-
     setArticle(response.data);
+    setFilterArticle(response.data);
   };
+
+  const handleFilter = (category) => {
+    if (!category || category === "all") {
+      setFilterArticle(article); 
+    } else {
+      const filtered = article.filter((a) => a.category === category);
+      setFilterArticle(filtered);
+    }
+  };
+
+  const handleRead = (article) => {
+    navigate(`/article/${article._id}`, { state: { article } });
+  };
+
   return (
     <>
       <div
@@ -47,62 +65,102 @@ function Story() {
               style={{ backgroundColor: "#e3e0e0ff", border: "none" }}
             />
           </div>
+
           <div className="col-auto">
             <button
-              className="btn btn-outline-secondary rounded px-3 py-1"
-              style={{
-                fontSize: "12px",
-                backgroundColor: "#000000",
-                color: "white",
-              }}
+              className="btn btn-dark rounded px-3 py-1"
+              style={{ fontSize: "12px", color: "white" }}
+              onClick={()=>handleFilter("all")}
             >
               <IoPricetagOutline className="me-1" />
-              All Topics
-            </button>
-          </div>{" "}
-          <div className="col-auto">
-            <button
-              className="btn btn-outline-secondary rounded px-3 py-1"
-              style={{ fontSize: "12px", color: "black" }}
-            >
-              <IoPricetagOutline className="me-1" />
-              All Topics
-            </button>
-          </div>
-          <div className="col-auto">
-            <button
-              className="btn btn-outline-secondary rounded  px-3 py-1"
-              style={{ fontSize: "12px", color: "black" }}
-            >
-              <IoPricetagOutline className="me-1" />
-              All Topics
+              All Articles
             </button>
           </div>
           <div className="col-auto">
             <button
               className="btn btn-outline-secondary rounded px-3 py-1"
               style={{ fontSize: "12px", color: "black" }}
+              onClick={()=>handleFilter("Folk Art")}
             >
               <IoPricetagOutline className="me-1" />
-              All Topics
+              Folk Art
             </button>
           </div>
+
           <div className="col-auto">
             <button
               className="btn btn-outline-secondary rounded px-3 py-1"
               style={{ fontSize: "12px", color: "black" }}
+              onClick={()=>handleFilter("Music")}
             >
               <IoPricetagOutline className="me-1" />
-              All Topics
+              Music
             </button>
           </div>
+
           <div className="col-auto">
             <button
               className="btn btn-outline-secondary rounded px-3 py-1"
               style={{ fontSize: "12px", color: "black" }}
+              onClick={()=>handleFilter("Dance")}
             >
               <IoPricetagOutline className="me-1" />
-              All Topics
+              Dance
+            </button>
+          </div>
+
+          <div className="col-auto">
+            <button
+              className="btn btn-outline-secondary rounded px-3 py-1"
+              style={{ fontSize: "12px", color: "black" }}
+              onClick={()=>handleFilter("Handicrafts")}
+            >
+              <IoPricetagOutline className="me-1" />
+              Handicrafts
+            </button>
+          </div>
+
+          <div className="col-auto">
+            <button
+              className="btn btn-outline-secondary rounded px-3 py-1"
+              style={{ fontSize: "12px", color: "black" }}
+              onClick={()=>handleFilter("Festivals")}
+            >
+              <IoPricetagOutline className="me-1" />
+              Festivals
+            </button>
+          </div>
+
+          <div className="col-auto">
+            <button
+              className="btn btn-outline-secondary rounded px-3 py-1"
+              style={{ fontSize: "12px", color: "black" }}
+              onClick={()=>handleFilter("Traditional Wear")}
+            >
+              <IoPricetagOutline className="me-1" />
+              Traditional Wear
+            </button>
+          </div>
+
+          <div className="col-auto">
+            <button
+              className="btn btn-outline-secondary rounded px-3 py-1"
+              style={{ fontSize: "12px", color: "black" }}
+              onClick={()=>handleFilter("Classic Art")}
+            >
+              <IoPricetagOutline className="me-1" />
+              Classical Art
+            </button>
+          </div>
+
+          <div className="col-auto">
+            <button
+              className="btn btn-outline-secondary rounded px-3 py-1"
+              style={{ fontSize: "12px", color: "black" }}
+              onClick={()=>handleFilter("Culture Heritage")}
+            >
+              <IoPricetagOutline className="me-1" />
+              Cultural Heritage
             </button>
           </div>
         </div>
@@ -118,16 +176,16 @@ function Story() {
             </div>
 
             <div className="row g-4 mt-3">
-              {[...article]
+              {article
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
                 .slice(0, 2)
-                .map((article, index) => (
+                .map((item, index) => (
                   <div key={index} className="col-sm-6 col-md-6 mb-4">
                     <div className="card h-100 shadow-sm border-0 rounded-4 overflow-hidden">
                       <img
                         src={
-                          article.images && article.images.length > 0
-                            ? `${BASE_URL}/article/${article.images[0]}`
+                          item.images && item.images.length > 0
+                            ? `${BASE_URL}/article/${item.images[0]}`
                             : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc9APxkj0xClmrU3PpMZglHQkx446nQPG6lA&s"
                         }
                         className="card-img-top"
@@ -137,37 +195,37 @@ function Story() {
                       <div className="card-body d-flex flex-column p-4">
                         <div className="mb-2 d-flex gap-2">
                           <span className="badge bg-light text-dark border fw-medium">
-                            {article.category}
+                            {item.category}
                           </span>
                           <span className="badge bg-warning text-white fw-medium">
                             Featured
                           </span>
                         </div>
                         <h5 className="card-title text-dark fw-bold mb-2">
-                          {article.title}
+                          {item.title}
                         </h5>
                         <p className="text-muted small mb-3">
-                          {article.shortDescription ||
-                            "Explore the rich traditions of classical arts in India."}
+                          {item.shortDescription ||
+                            "Explore the rich traditions..."}
                         </p>
                         <div className="d-flex justify-content-between align-items-center mb-3 text-muted small">
                           <span>
                             <PermIdentityIcon
                               style={{ height: "25px", width: "25px" }}
                             />{" "}
-                            {article.author?.name || "Admin"}
+                            {item.author?.name || "Admin"}
                           </span>
                           <span>
-                            <AccessTimeIcon /> {article.readTime || "5 min"}
+                            <AccessTimeIcon /> {item.readTime +"minute"|| "5 min"}
                           </span>
                         </div>
-                        <a
-                          href={`/article/${article._id}`}
+                        <Link
+                          onClick={() => handleRead(item)}
                           className="btn btn-dark btn-sm w-100 mt-3 rounded fw-medium"
                           style={{ height: "32px" }}
                         >
                           Read More →
-                        </a>
+                        </Link>
                       </div>
                     </div>
                   </div>
@@ -238,57 +296,68 @@ function Story() {
               <FiBookOpen size={26} className="me-2" />
               <h4 className="mb-2 fs-3">All Articles</h4>
             </div>
-
-            <div className="card flex-md-row shadow-sm border-0 overflow-hidden mb-4">
-              <img
-                src={image}
-                className="img-fluid"
-                alt="article"
-                style={{
-                  width: "250px",
-                  height: "100%",
-                  objectFit: "cover",
-                }}
-              />
-              <div className="card-body">
-                <button
-                  className="mt-0 mb-2 fs-7 rounded-pill"
+            {Filterarticle.map((articles, index) => (
+              <div
+                key={index}
+                className="card flex-md-row shadow-sm border-0 overflow-hidden mb-4"
+              >
+                <img
+                  src={
+                    articles.images && articles.images.length > 0
+                      ? `${BASE_URL}/article/${articles.images[0]}`
+                      : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTc9APxkj0xClmrU3PpMZglHQkx446nQPG6lA&s"
+                  }
+                  className="img-fluid"
+                  alt="article"
                   style={{
-                    border: "#f64100",
-                    color: "#f64100",
-                    fontSize: "10px",
+                    width: "250px",
+                    height: "100%",
+                    objectFit: "cover",
                   }}
-                >
-                  Category
-                </button>
-                <h5 className="fw-bold">
-                  The Living Traditions of Classical Dance
-                </h5>
-                <p className="text-muted mb-2">
-                  Explore how Bharatnatyam, Kathak, and other classical forms
-                  evolve while preserving their ancient essence.
-                </p>
-                <div className="d-flex justify-content-between small text-muted mb-3">
-                  <span style={{ fontSize: "12px" }}>
-                    <PermIdentityIcon
-                      style={{ height: "20px", width: "20px" }}
-                    />{" "}
-                    Dr. Priya Krishnan
-                  </span>
-                  <span style={{ fontSize: "12px" }}>
-                    <CalendarTodayIcon style={{ height: "20px", width: "20px" }} />{" "}
-                    8 min read
-                  </span>{" "}
-                  <span style={{ fontSize: "12px" }}>
-                    <AccessTimeIcon style={{ height: "20px", width: "20px" }} />{" "}
-                    8 min read
-                  </span>
+                />
+                <div className="card-body">
+                  <button
+                    className="mt-0 mb-2 fs-7 rounded-pill"
+                    style={{
+                      border: "#f64100",
+                      color: "#f64100",
+                      fontSize: "10px",
+                    }}
+                  >
+                    {articles.category}
+                  </button>
+                  <h5 className="fw-bold">{articles.title}</h5>
+                  <p className="text-muted mb-2">{articles.shortDescription}</p>
+                  <div className="d-flex justify-content-between small text-muted mb-3">
+                    <span style={{ fontSize: "12px" }}>
+                      <PermIdentityIcon
+                        style={{ height: "20px", width: "20px" }}
+                      />{" "}
+                      {articles.author.name}
+                    </span>
+                    <span style={{ fontSize: "12px" }}>
+                      <CalendarTodayIcon
+                        style={{ height: "20px", width: "20px" }}
+                      />{" "}
+                      {new Date(articles.createdAt).toLocaleDateString()}
+                    </span>{" "}
+                    <span style={{ fontSize: "12px" }}>
+                      <AccessTimeIcon
+                        style={{ height: "20px", width: "20px" }}
+                      />{" "}
+                      {articles.readTime}minute
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => handleRead(articles)}
+                    href="#"
+                    className="btn btn-outline-dark btn-sm"
+                  >
+                    Read Article →
+                  </button>
                 </div>
-                <a href="#" className="btn btn-outline-dark btn-sm">
-                  Read Article →
-                </a>
               </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>

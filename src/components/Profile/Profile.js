@@ -84,7 +84,7 @@ function Profile() {
               }
               alt="User"
               className="rounded-circle border border-3 border-white"
-              style={{ width: "100px", marginTop: "-50px" }}
+              style={{ width: "100px",height:"100px", marginTop: "-50px" }}
             />
 
             {name && (
@@ -172,6 +172,7 @@ function Profile() {
               </div>
             </div>
           )}
+          
         </div>
       </div>
 

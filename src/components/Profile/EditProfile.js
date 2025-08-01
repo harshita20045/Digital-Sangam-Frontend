@@ -50,12 +50,10 @@ const handleSubmit = async (e) => {
     let user = getCurrentUser();
     let form = new FormData();
 
-    // Append all text fields from formData
     for (const key in formData) {
       form.append(key, formData[key]);
     }
 
-    // Append the profile image if it exists
     if (profileImage) {
       form.append("profileImage", profileImage);
     }
