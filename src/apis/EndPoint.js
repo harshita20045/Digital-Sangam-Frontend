@@ -1,4 +1,4 @@
-export const BASE_URL = "http://localhost:3000";
+export const BASE_URL = "https://digital-sangam-backend.onrender.com";
 export default {
   all_articles: BASE_URL + "/article/all",
   CATEGORY_LIST:BASE_URL+"/article/category",

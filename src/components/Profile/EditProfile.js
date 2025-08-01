@@ -44,7 +44,7 @@ function EditProfile() {
     if (event.target.files) setProfileImage(event.target.files[0]);
   };
 const handleSubmit = async (e) => {
-  e.preventDefault(); // prevent default form submission
+  e.preventDefault(); 
 
   try {
     let user = getCurrentUser();
