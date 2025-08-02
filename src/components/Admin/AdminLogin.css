@@ -1,0 +1,21 @@
+.login-wrapper {
+  min-height: 100vh;
+  background: linear-gradient(to right, #3a86ff, #8338ec, #9d4edd);
+}
+
+.login-card {
+  background-color: white;
+  max-width: 400px;
+  width: 100%;
+}
+
+.icon-circle {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #6f42c1, #6610f2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  margin: 0 auto;
+}

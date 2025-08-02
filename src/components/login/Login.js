@@ -18,7 +18,7 @@ function Login() {
       event.preventDefault();
       if (state.email && state.password) {
         setIsLoading(true);
-        let response = await axios.post(EndPoint.SIGN_IN, state);
+        let response = await axios.post(EndPoint.SIGN_IN, state,{  withCredentials:true  });
         console.log(response.data.user);
         sessionStorage.setItem(
           "current-user",

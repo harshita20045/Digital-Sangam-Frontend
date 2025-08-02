@@ -1,67 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaBookOpen } from "react-icons/fa";
 import { FiFilter } from "react-icons/fi";
 import { IoIosArrowForward } from "react-icons/io";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-
-const LANGUAGES = [
-  {
-    name: "Bhojpuri",
-    region: "Bihar, Eastern UP",
-    description:
-      "A widely spoken dialect known for its vibrant cinema, folk music, and rich culture.",
-    speakers: "52+ million",
-    words: 24,
-    icon: "🌽",
-  },
-  {
-    name: "Tamil",
-    region: "Tamil Nadu, Sri Lanka",
-    description:
-      "One of the oldest languages with rich literary traditions spanning over 2,000 years.",
-    speakers: "75+ million",
-    words: 18,
-    icon: "🏛️",
-  },
-  {
-    name: "Marathi",
-    region: "Maharashtra",
-    description:
-      "The official language of Maharashtra with diverse regional variations and literature.",
-    speakers: "83+ million",
-    words: 31,
-    icon: "🌳",
-  },
-  {
-    name: "Gujarati",
-    region: "Gujarat",
-    description:
-      "Known for its business terminology and vibrant cultural expressions.",
-    speakers: "56+ million",
-    words: 22,
-    icon: "🪔",
-  },
-];
+import axios from "axios";
+import EndPoint from "../../apis/EndPoint";
 
 function Dialect() {
-  const [selectedLang, setSelectedLang] = useState("All Languages");
+  const [lang, setLang] = useState([]);
+  const [dialects, setDialect] = useState([]);
+  const [allDialects, setAllDialects] = useState([]);
+  const [selectedLanguage, setSelectedLanguage] = useState("All");
+
+  useEffect(() => {
+    loadDialects();
+  }, []);
+
+  const loadDialects = async () => {
+    try {
+      let response = await axios.get(EndPoint.DIALECT_LIST);
+      let language = await axios.get(EndPoint.LANGUAGE_LIST);
+      setLang(language.data.languageName);
+      setAllDialects(response.data.dialects || []);
+      setDialect(response.data.dialects || []);
+    } catch (error) {
+      console.error("Failed to load dialects:", error);
+    }
+  };
+
+  const handleFilter = (language) => {
+    if (language === "All") {
+      setDialect(allDialects); 
+    } else {
+      const filtered = allDialects.filter(
+        (dialect) => dialect.language === language
+      );
+      setDialect(filtered);
+    }
+  };
 
   return (
     <>
       <Header />
 
-      <div className="bg-light py-5">
+      <div className="py-5" style={{ backgroundColor: "#fef6f0" }}>
         <div className="container">
-
-          {/* Header */}
-          <div className="text-center mb-4">
+          <div className="text-center mb-5">
             <h2 className="fw-bold d-flex justify-content-center align-items-center gap-2">
               <FaBookOpen className="text-danger" />
               Explore Dialects
             </h2>
-            <p className="text-secondary">
-              Discover words, meanings, and pronunciations from India's diverse languages
+            <p className="text-muted">
+              Discover words, meanings, and pronunciations from India's diverse
+              languages
             </p>
             <div className="d-flex justify-content-center gap-3 text-muted small mt-2">
               <span>📚 12 Languages</span>
@@ -70,7 +62,6 @@ function Dialect() {
             </div>
           </div>
 
-          {/* Search & Filter */}
           <div className="row justify-content-center mb-4">
             <div className="col-md-6 mb-2">
               <input
@@ -80,49 +71,67 @@ function Dialect() {
               />
             </div>
             <div className="col-auto">
-              <button className="btn btn-outline-secondary">
-                <FiFilter className="me-2" />
-                {selectedLang}
-              </button>
+              <div className="input-group">
+                <span className="input-group-text">
+                  <FiFilter />
+                </span>
+                <select
+                  className="form-select"
+                  value={selectedLanguage}
+                  onChange={(e) => {
+                    setSelectedLanguage(e.target.value);
+                    handleFilter(e.target.value);
+                  }}
+                >
+                  <option value="All">All Languages</option>
+                  {lang.map((lan, index) => (
+                    <option key={index} value={lan.language}>
+                      {lan.language}
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
           </div>
 
-          {/* Subtitle */}
-          <div className="mb-3">
-            <h5 className="fw-semibold">Select a Language</h5>
-            <p className="text-muted small">
-              Choose a language to explore its dialect words, meanings, and pronunciations.
-            </p>
-          </div>
 
-          {/* Language Cards */}
-          <div className="row g-4">
-            {LANGUAGES.map((lang, idx) => (
-              <div className="col-md-6 col-lg-3" key={idx}>
-                <div className="card h-100 shadow-sm border-start border-4 border-danger">
-                  <div className="card-body d-flex flex-column">
-                    <h6 className="card-title fw-bold d-flex align-items-center gap-2">
-                      <span>{lang.icon}</span> {lang.name}
-                    </h6>
-                    <p className="text-muted small mb-1">{lang.region}</p>
-                    <p className="card-text text-secondary small mb-2" style={{ minHeight: "60px" }}>
-                      {lang.description}
-                    </p>
-                    <p className="small mb-1">
-                      <strong>Speakers:</strong> {lang.speakers}
-                    </p>
-                    <p className="small mb-3">
-                      <strong>Dialect Words:</strong> {lang.words}
-                    </p>
-                    <button className="btn btn-link text-danger mt-auto p-0 d-flex align-items-center">
-                      Explore Words <IoIosArrowForward className="ms-1" />
-                    </button>
+          {dialects.length === 0 ? (
+            <p className="text-center text-muted">No dialects found.</p>
+          ) : (
+            <div className="row g-4">
+              {dialects.map((dialect, index) => (
+                <div className="col-md-6 col-lg-4" key={index}>
+                  <div className="card h-100 shadow-sm border-0 rounded-4">
+                    <div className="card-body">
+                      <h5 className="card-title text-danger mb-2">
+                        {dialect.word}
+                      </h5>
+
+                      <p className="mb-1">
+                        <strong>Meaning:</strong> {dialect.meaning}
+                      </p>
+
+                      <p className="mb-1">
+                        <strong>Language:</strong> {dialect.language}
+                      </p>
+
+                      <p className="mb-1">
+                        <strong>Example:</strong> {dialect.example}
+                      </p>
+
+                      {dialect.audioLink && (
+                        <audio controls className="w-100 mt-3">
+                          <source src={dialect.audioLink} type="audio/mpeg" />
+                          Your browser does not support the audio element.
+                        </audio>
+                      )}
+                    </div>
+                   
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-
+              ))}
+            </div>
+          )}
         </div>
       </div>
 

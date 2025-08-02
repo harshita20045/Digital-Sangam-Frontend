@@ -13,6 +13,8 @@ import EditProfile from "./components/Profile/EditProfile";
 import ArticleDetail from "./components/Articles/Read/ArticleDetail";
 import MyArticles from "./components/Articles/My Articles/MyArticles";
 import ArticleUploadForm from "./components/Articles/My Articles/ArticleUploadForm";
+import AdminDashboard from "./components/Admin/AdminDashboard";
+import AdminLogin from "./components/Admin/AdminLogin";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
         <Route path="/article/:id" element={<ArticleDetail />} />
         <Route path="/my-articles" element={<MyArticles />} />
         <Route path="/upload-articles" element={<ArticleUploadForm />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard/>} />
+        <Route path="/admin/login" element={<AdminLogin/>} />
       </Routes>
     </>
   );

@@ -35,7 +35,7 @@ function ArticleUploadForm() {
       }
       imageFiles.forEach((file) => data.append("images", file));
 
-      const res = await axios.post("https://digital-sangam-backend.onrender.com/article", data, {
+      const res = await axios.post("http://localhost:3000/article", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
