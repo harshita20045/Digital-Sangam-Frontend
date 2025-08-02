@@ -19,7 +19,7 @@ function Profile() {
   const [savedData, setSavedData] = useState({});
 
   useEffect(() => {
-    const stored = sessionStorage.getItem("profileData");
+    const stored = sessionStorage.getItem("current-user");
     if (stored) {
       setSavedData(JSON.parse(stored));
     }

@@ -9,7 +9,7 @@ import EndPoint from "../../apis/EndPoint";
 function Header() {
   let navigate = useNavigate();
   let user = getCurrentUser();
-  console.log(user.profile.profileImage);
+
   const handleLogOut = async () => {
     try {
       await axios.get(EndPoint.LOG_OUT)
