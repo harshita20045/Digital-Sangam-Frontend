@@ -123,8 +123,7 @@ function Header() {
             </Link>
             <img
               src={
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCHU5JIkqfD2z1KMc4c1nW4zdArnxBM3cCcQ&s" ||
-                user.profile.profileImage
+                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCHU5JIkqfD2z1KMc4c1nW4zdArnxBM3cCcQ&s" 
               }
               style={{ borderRadius: "50%", height: "30px", width: "30px" }}
             />
