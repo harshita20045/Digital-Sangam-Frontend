@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/static/css/main.7367115f.css",
+    "main.js": "/static/js/main.a5dd197f.js",
+    "static/js/453.7c62ddfd.chunk.js": "/static/js/453.7c62ddfd.chunk.js",
+    "static/media/Digital.jpg": "/static/media/Digital.315a280c4bad8ab32e93.jpg",
+    "static/media/triveniSangam.jpg": "/static/media/triveniSangam.491ca1fa953529a00c8c.jpg",
+    "static/media/experience-HomePage.jpg": "/static/media/experience-HomePage.fd0ef34f69dbb178447f.jpg",
+    "static/media/Footer.png": "/static/media/Footer.3d74eef31052a9a42bec.png",
+    "static/media/logoHeader.png": "/static/media/logoHeader.ab3b06f9a798bb6e44a3.png",
+    "index.html": "/index.html",
+    "main.7367115f.css.map": "/static/css/main.7367115f.css.map",
+    "main.a5dd197f.js.map": "/static/js/main.a5dd197f.js.map",
+    "453.7c62ddfd.chunk.js.map": "/static/js/453.7c62ddfd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.7367115f.css",
+    "static/js/main.a5dd197f.js"
+  ]
+}
