@@ -34,7 +34,7 @@ function App() {
         <Route path="/my-articles" element={<MyArticles />} />
         <Route path="/upload-articles" element={<ArticleUploadForm />} />
         <Route path="/admin-dashboard" element={<AdminDashboard/>} />
-        <Route path="/admin/profile" element={<AdminLogin/>} />
+        <Route path="/admin/login" element={<AdminLogin/>} />
       </Routes>
     </>
   );
