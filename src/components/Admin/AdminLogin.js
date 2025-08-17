@@ -4,6 +4,9 @@ import axios from "axios";
 import { toast,ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import EndPoint from "../../apis/EndPoint";
+import { IoMdMail } from "react-icons/io";
+import { RiLockPasswordFill } from "react-icons/ri";
+
 
 
 function AdminLogin() {
@@ -58,7 +61,8 @@ function AdminLogin() {
             <label>Email Address</label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="bi bi-envelope"></i>
+                <i className="bi bi-envelope"><IoMdMail />
+</i>
               </span>
               <input
                 type="email"
@@ -73,7 +77,9 @@ function AdminLogin() {
             <label>Password</label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="bi bi-lock"></i>
+                <i className="bi bi-lock"><RiLockPasswordFill />
+
+</i>
               </span>
               <input
                 type="password"

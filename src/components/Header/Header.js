@@ -12,7 +12,7 @@ function Header() {
 
   const handleLogOut = async () => {
     try {
-      await axios.get(EndPoint.LOG_OUT)
+      await axios.get(EndPoint.LOG_OUT,{withCredentials:true})
       sessionStorage.setItem("current-user", "");
       sessionStorage.clear();
       navigate("/");

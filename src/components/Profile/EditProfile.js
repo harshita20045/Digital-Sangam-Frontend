@@ -16,7 +16,6 @@ function EditProfile() {
   let user=getCurrentUser()
   const [formData, setFormData] = useState({
     name: "",
-
     contact: "",
     address: "",
     city: "",

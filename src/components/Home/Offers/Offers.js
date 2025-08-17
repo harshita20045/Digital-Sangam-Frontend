@@ -9,9 +9,9 @@ function Offers() {
         <h1 className="mb-4 display-4" style={{fontWeight:"400"}}>What Digital Sangam Offers</h1>
         <p className="lead">A comprehensive platform to explore, learn, and preserve India's incredible cultural diversity</p>
       </div>
-      <div class="container">
-        <div class="row">
-          <div class="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
+      <div className="container">
+        <div className="row">
+          <div className="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
             <FaReadme
               style={{
                 color: "#F64100",
@@ -25,7 +25,7 @@ function Offers() {
               and heritage.
             </p>
           </div>{" "}
-         <div class="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
+         <div className="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
             <TbWorld
               style={{
                 color: "#F64100",
@@ -39,7 +39,7 @@ function Offers() {
               audio samples.
             </p>
           </div>{" "}
-         <div class="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
+         <div className="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
             <IoPeople
               style={{
                 color: "#F64100",
@@ -54,8 +54,8 @@ function Offers() {
             </p>
           </div>
         </div>{" "}
-        <div class="row">
-         <div class="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
+        <div className="row">
+         <div className="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
             <FaMusic
               style={{
                 color: "#F64100",
@@ -69,7 +69,7 @@ function Offers() {
               regions.
             </p>
           </div>{" "}
-         <div class="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
+         <div className="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
             <IoCameraOutline
               style={{
                 color: "#F64100",
@@ -83,7 +83,7 @@ function Offers() {
               beauty.
             </p>
           </div>{" "}
-         <div class="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
+         <div className="col m-5 pl-4 pe-5 py-2 " style={{ borderRadius:"20px",border:"1px solid #b1b1b1ff" ,borderLeft:"5px solid #F64100"}}>
             <FaAward
               style={{
                 color: "#F64100",

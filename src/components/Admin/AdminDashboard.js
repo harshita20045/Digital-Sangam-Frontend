@@ -11,8 +11,10 @@ import {
   Alert,
   Form,
 } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
+  let navigate=useNavigate()
   const [activePage, setActivePage] = useState("dashboard");
   const [articles, setArticles] = useState([]);
   const [dialects, setDialects] = useState([]);
@@ -496,8 +498,15 @@ function AdminDashboard() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     alert("Logged out!");
+    try{
+          await axios.get(EndPoint.LOG_OUT,{withCredentials:true})
+          navigate("/")
+    }catch(err){
+      console.log(err)
+    }
+
   };
 
   return (
