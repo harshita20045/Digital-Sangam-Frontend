@@ -15,6 +15,11 @@ import MyArticles from "./components/Articles/My Articles/MyArticles";
 import ArticleUploadForm from "./components/Articles/My Articles/ArticleUploadForm";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import AdminLogin from "./components/Admin/AdminLogin";
+import MyDialects from "./components/Dialects/Mydialects";
+import SubmitDialectPage from "./components/Dialects/SubmitDialectPage";
+import ViewMore from "./components/Dialects/ViewMore";
+import EditArticle from "./components/Articles/My Articles/EditArticle";
+import Auth from "./components/auth/Auth";
 
 function App() {
   return (
@@ -27,15 +32,20 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/articles" element={<Article />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/edit-profile" element={<EditProfile />} />
+        <Route path="/profile" element={<Auth><Profile /></Auth>} />
+        <Route path="/edit-profile" element={<Auth><EditProfile /></Auth>} />
         <Route path="/dialects" element={<Dialect />} />
-        <Route path="/article/:id" element={<ArticleDetail />} />
-        <Route path="/my-articles" element={<MyArticles />} />
-        <Route path="/upload-articles" element={<ArticleUploadForm />} />
-        <Route path="/admin-dashboard" element={<AdminDashboard/>} />
-        <Route path="/admin/login" element={<AdminLogin/>} />
+        <Route path="/article/:id" element={<Auth><ArticleDetail /></Auth>} />
+        <Route path="/my-articles" element={<Auth><MyArticles /></Auth>} />
+        <Route path="/my-dialects" element={<Auth><MyDialects /></Auth>} />
+        <Route path="/add-dialect" element={<Auth><SubmitDialectPage /></Auth>} />
+        <Route path="/view-more" element={<Auth><ViewMore /></Auth>} />
+        <Route path="/upload-articles" element={<Auth><ArticleUploadForm /></Auth>} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route path="/edit-article/:id" element={<Auth><EditArticle /></Auth>} />
       </Routes>
+      
     </>
   );
 }

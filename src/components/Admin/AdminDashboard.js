@@ -11,10 +11,8 @@ import {
   Alert,
   Form,
 } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
 
 function AdminDashboard() {
-  let navigate=useNavigate()
   const [activePage, setActivePage] = useState("dashboard");
   const [articles, setArticles] = useState([]);
   const [dialects, setDialects] = useState([]);
@@ -35,20 +33,13 @@ function AdminDashboard() {
   }, []);
 
   useEffect(() => {
-    if (activePage === "dialects") {
-      fetchDialects();
-    }
-    if (activePage === "languages") {
-      fetchLanguages();
-    }
-    if (activePage === "articles") {
-      fetchArticles();
-    }
+    if (activePage === "dialects") fetchDialects();
+    if (activePage === "languages") fetchLanguages();
+    if (activePage === "articles") fetchArticles();
   }, [activePage]);
 
   const handleAddLanguage = async () => {
     if (language.trim() === "") return;
-    console.log(language);
     setLoading(true);
     setError(null);
     try {
@@ -57,11 +48,11 @@ function AdminDashboard() {
       fetchLanguages();
     } catch (err) {
       setError("Failed to add language.");
-      console.error("Failed to add language:", err);
     } finally {
       setLoading(false);
     }
   };
+
   const handleDeleteLanguage = async (languageId) => {
     setLoading(true);
     setError(null);
@@ -70,7 +61,6 @@ function AdminDashboard() {
       fetchLanguages();
     } catch (err) {
       setError("Failed to delete language.");
-      console.error("Failed to delete language:", err);
     } finally {
       setLoading(false);
     }
@@ -80,17 +70,10 @@ function AdminDashboard() {
     setLoading(true);
     setError(null);
     try {
-      console.log(articleId);
-      console.log("Calling:", `${EndPoint.UPDATE_ARTICLE_STATUS}/${articleId}`);
-
-      await axios.put(`${EndPoint.UPDATE_ARTICLE_STATUS}/${articleId}`, {
-        status,
-      });
-
+      await axios.put(`${EndPoint.UPDATE_ARTICLE_STATUS}/${articleId}`, { status });
       fetchArticles();
     } catch (err) {
       setError("Failed to update article status.");
-      console.error("Failed to update article status:", err);
     } finally {
       setLoading(false);
     }
@@ -100,17 +83,15 @@ function AdminDashboard() {
     setLoading(true);
     setError(null);
     try {
-      await axios.put(`${EndPoint.UPDATE_DIALECT_STATUS}/${dialectId}`, {
-        status,
-      });
+      await axios.put(`${EndPoint.UPDATE_DIALECT_STATUS}/${dialectId}`, { status });
       fetchDialects();
     } catch (err) {
       setError("Failed to update dialect status.");
-      console.error("Failed to update dialect status:", err);
     } finally {
       setLoading(false);
     }
   };
+
   const fetchDialects = async () => {
     setLoading(true);
     setError(null);
@@ -119,7 +100,6 @@ function AdminDashboard() {
       setDialects(res.data.dialects || []);
     } catch (err) {
       setError("Failed to fetch dialects.");
-      console.error("Failed to fetch dialects:", err);
     } finally {
       setLoading(false);
     }
@@ -130,11 +110,9 @@ function AdminDashboard() {
     setError(null);
     try {
       const res = await axios.get(`${EndPoint.ADMIN_ALL_LANGUAGES}`);
-      console.log(res.data.languageName);
       setLanguages(res.data.languageName || []);
     } catch (err) {
       setError("Failed to fetch languages.");
-      console.error("Failed to fetch languages:", err);
     } finally {
       setLoading(false);
     }
@@ -148,7 +126,6 @@ function AdminDashboard() {
       setArticles(res.data.articles || []);
     } catch (err) {
       setError("Failed to fetch articles.");
-      console.error("Failed to fetch articles:", err);
     } finally {
       setLoading(false);
     }
@@ -162,7 +139,6 @@ function AdminDashboard() {
       setStats(res.data);
     } catch (err) {
       setError("Failed to fetch stats.");
-      console.error("Failed to fetch stats:", err);
     } finally {
       setLoading(false);
     }
@@ -170,86 +146,46 @@ function AdminDashboard() {
 
   const getBadgeColor = (status) => {
     switch (status.toLowerCase()) {
-      case "pending":
-        return "warning";
-      case "approved":
-        return "success";
-      case "rejected":
-        return "danger";
-      default:
-        return "secondary";
+      case "pending": return "warning";
+      case "approved": return "success";
+      case "rejected": return "danger";
+      default: return "secondary";
     }
   };
 
-  const filteredDialects =
-    filter === "all"
-      ? dialects
-      : dialects.filter((d) => d.status.toLowerCase() === filter);
-
-  const filteredArticles = articles.filter((article) => {
-    if (filter === "all") return true;
-    return article.status.toLowerCase() === filter;
-  });
+  const filteredDialects = filter === "all" ? dialects : dialects.filter((d) => d.status.toLowerCase() === filter);
+  const filteredArticles = filter === "all" ? articles : articles.filter((a) => a.status.toLowerCase() === filter);
 
   const renderContent = () => {
-    if (loading) {
-      return <Spinner animation="border" />;
-    }
-
-    if (error) {
-      return <Alert variant="danger">{error}</Alert>;
-    }
+    if (loading) return <div className="text-center p-5"><Spinner animation="border" /></div>;
+    if (error) return <Alert variant="danger">{error}</Alert>;
 
     switch (activePage) {
       case "dashboard":
         return (
           <>
-            <h2 className="mt-3">Admin Dashboard</h2>
-            <p className="text-muted">
-              Overview of your content moderation platform
-            </p>
-            <div className="d-flex gap-3 flex-wrap mb-4">
-              {[
-                {
-                  id: 1,
-                  label: "Total Users",
-                  value: stats.users,
-                  icon: "👥",
-                  bg: "bg-primary text-white",
-                },
-                {
-                  id: 2,
-                  label: "Languages",
-                  value: stats.languages,
-                  icon: "🌐",
-                  bg: "bg-success text-white",
-                },
-                {
-                  id: 3,
-                  label: "Articles",
-                  value: stats.articles,
-                  icon: "📰",
-                  bg: "bg-warning text-dark",
-                },
-                {
-                  id: 4,
-                  label: "Dialects",
-                  value: stats.dialects,
-                  icon: "🗣️",
-                  bg: "bg-secondary text-dark",
-                },
-              ].map((stat) => (
-                <div
-                  key={stat.id}
-                  className={`rounded-3 p-3 flex-grow-1 flex-shrink-0 ${stat.bg}`}
-                  style={{ minWidth: "220px" }}
-                >
-                  <div className="d-flex justify-content-between align-items-center">
-                    <div>
-                      <p className="mb-1">{stat.label}</p>
-                      <h4 className="fw-bold">{stat.value}</h4>
+            <h2 className="mb-4 fw-semibold">Dashboard</h2>
+            <div className="row g-3">
+              {[{
+                label: "Total Users", value: stats.users, icon: "👥", bg: "primary"
+              }, {
+                label: "Languages", value: stats.languages, icon: "🌐", bg: "success"
+              }, {
+                label: "Articles", value: stats.articles, icon: "📰", bg: "warning"
+              }, {
+                label: "Dialects", value: stats.dialects, icon: "🗣️", bg: "secondary"
+              }].map((stat, i) => (
+                <div className="col-md-3" key={i}>
+                  <div className="card shadow-sm border-0">
+                    <div className="card-body d-flex justify-content-between align-items-center">
+                      <div>
+                        <p className="text-muted mb-1 small">{stat.label}</p>
+                        <h4 className="fw-bold mb-0">{stat.value}</h4>
+                      </div>
+                      <div className={`icon-circle bg-${stat.bg} text-white`}>
+                        {stat.icon}
+                      </div>
                     </div>
-                    <div className="opacity-75 fs-2">{stat.icon}</div>
                   </div>
                 </div>
               ))}
@@ -259,235 +195,112 @@ function AdminDashboard() {
 
       case "articles":
         return (
-          <div className="container py-4">
-            <h2 className="mb-2">Articles Management</h2>
-            <p className="text-muted mb-4">
-              Manage and moderate article submissions
-            </p>
+          <div>
+            <h2 className="mb-4 fw-semibold">Articles Management</h2>
             <ul className="nav nav-pills mb-3">
               {["all", "pending", "approved", "rejected"].map((tab) => (
                 <li className="nav-item" key={tab}>
-                  <button
-                    className={`nav-link ${filter === tab ? "active" : ""}`}
-                    onClick={() => setFilter(tab)}
-                  >
-                    {tab === "all"
-                      ? "All Articles"
-                      : tab.charAt(0).toUpperCase() +
-                        tab.slice(1) +
-                        " Articles"}
+                  <button className={`nav-link ${filter === tab ? "active" : ""}`} onClick={() => setFilter(tab)}>
+                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
                   </button>
                 </li>
               ))}
             </ul>
-            <div className="table-responsive rounded shadow-sm border">
-              <table className="table table-striped align-middle mb-0">
-                <thead className="table-light">
-                  <tr>
-                    <th>Title</th>
-                    <th>Author</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredArticles.map((article) => (
-                    <tr key={article._id}>
-                      <td>{article.title}</td>
-                      <td>
-                        <div>{article.author.name}</div>
-                        <div className="text-muted small">
-                          {article.author.email}
-                        </div>
-                      </td>
-                      <td>
-                        <span
-                          className={`badge bg-${getBadgeColor(
-                            article.status
-                          )}`}
-                        >
-                          {article.status}
-                        </span>
-                      </td>
-                      <td>
-                        <button className="btn btn-sm btn-outline-primary me-2">
-                          View
-                        </button>
-                        {article.status.toLowerCase() === "pending" && (
-                          <>
-                            <button
-                              onClick={() =>
-                                handleUpdateArticleStatus(
-                                  article._id,
-                                  "approved"
-                                )
-                              }
-                              className="btn btn-sm btn-success me-2"
-                            >
-                              Approve
-                            </button>
-                            <button
-                              onClick={() =>
-                                handleUpdateArticleStatus(
-                                  article._id,
-                                  "rejected"
-                                )
-                              }
-                              className="btn btn-sm btn-danger me-2"
-                            >
-                              Reject
-                            </button>
-                          </>
-                        )}
-                        <button className="btn btn-sm btn-dark">Delete</button>
-                      </td>
-                    </tr>
-                  ))}
-                  {filteredArticles.length === 0 && (
-                    <tr>
-                      <td colSpan="4" className="text-center text-muted py-3">
-                        No articles found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
+            <div className="card shadow-sm border-0">
+              <div className="card-body p-0">
+                <Table responsive hover striped className="mb-0">
+                  <thead className="table-light">
+                    <tr><th>Title</th><th>Author</th><th>Status</th><th className="text-end">Actions</th></tr>
+                  </thead>
+                  <tbody>
+                    {filteredArticles.map((article) => (
+                      <tr key={article._id}>
+                        <td>{article.title}</td>
+                        <td>
+                          <div>{article.author.name}</div>
+                          <small className="text-muted">{article.author.email}</small>
+                        </td>
+                        <td><Badge bg={getBadgeColor(article.status)}>{article.status}</Badge></td>
+                        <td className="text-end">
+                          <div className="btn-group">
+                            <Button size="sm" variant="outline-primary">View</Button>
+                            {article.status.toLowerCase() === "pending" && (
+                              <>
+                                <Button onClick={() => handleUpdateArticleStatus(article._id, "approved")} size="sm" variant="success">Approve</Button>
+                                <Button onClick={() => handleUpdateArticleStatus(article._id, "rejected")} size="sm" variant="danger">Reject</Button>
+                              </>
+                            )}
+                            <Button size="sm" variant="dark">Delete</Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                    {filteredArticles.length === 0 && <tr><td colSpan="4" className="text-center text-muted py-3">No articles found</td></tr>}
+                  </tbody>
+                </Table>
+              </div>
             </div>
           </div>
         );
-
-      case "dialects":
+      case "languages":
         return (
-          <div className="container mt-4">
-            <h2>Dialect Management</h2>
-            <p>Manage and moderate dialect submissions</p>
-            <Nav
-              variant="tabs"
-              activeKey={filter}
-              onSelect={(k) => setFilter(k)}
-            >
-              <Nav.Item>
-                <Nav.Link eventKey="all">All Dialects</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="pending">Pending Dialects</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="approved">Approved Dialects</Nav.Link>
-              </Nav.Item>
-              <Nav.Item>
-                <Nav.Link eventKey="rejected">Rejected Dialects</Nav.Link>
-              </Nav.Item>
-            </Nav>
-            <Table striped bordered hover className="mt-3">
-              <thead>
-                <tr>
-                  <th>Dialect</th>
-                  <th>Language</th>
-                  <th>Status</th>
-                  <th>Actions</th>
-                </tr>
+          <div>
+            <h2 className="mb-3 fw-bold">🌐 Languages Management</h2>
+            <Form onSubmit={(e) => { e.preventDefault(); handleAddLanguage(); }} className="d-flex gap-2 mb-3">
+              <Form.Control type="text" placeholder="Enter new language" value={language} onChange={(e) => setNewLanguage(e.target.value)} />
+              <Button variant="primary" type="submit">Add</Button>
+            </Form>
+            <Table hover bordered responsive>
+              <thead className="table-light">
+                <tr><th>Language</th><th>Actions</th></tr>
               </thead>
               <tbody>
-                {filteredDialects.map((d) => (
-                  <tr key={d.id}>
-                    <td>{d.name}</td>
-                    <td>{d.language}</td>
+                {languages.map((lang) => (
+                  <tr key={lang._id}>
+                    <td>{lang.language}</td>
                     <td>
-                      <Badge bg={getBadgeColor(d.status)}>{d.status}</Badge>
-                    </td>
-                    <td>
-                      <Button size="sm" variant="secondary" className="me-2">
-                        View
-                      </Button>
-                      {d.status === "pending" && (
-                        <>
-                          <Button
-                            onClick={() =>
-                              handleUpdateDialectStatus(d._id, "approved")
-                            }
-                            size="sm"
-                            variant="success"
-                            className="me-2"
-                          >
-                            Approve
-                          </Button>
-                          <Button
-                            onClick={() =>
-                              handleUpdateDialectStatus(d.id, "rejected")
-                            }
-                            size="sm"
-                            variant="danger"
-                            className="me-2"
-                          >
-                            Reject
-                          </Button>
-                        </>
-                      )}
-                      <Button size="sm" variant="danger">
-                        Delete
-                      </Button>
+                      <Button size="sm" variant="danger" onClick={() => handleDeleteLanguage(lang._id)}>Delete</Button>
                     </td>
                   </tr>
                 ))}
+                {languages.length === 0 && <tr><td colSpan="2" className="text-center text-muted py-3">No languages found</td></tr>}
               </tbody>
             </Table>
           </div>
         );
 
-      case "languages":
+      case "dialects":
         return (
-          <div className="container mt-4">
-            <h2>Languages Management</h2>
-            <p>Manage and moderate language submissions</p>
-            <Form
-              onSubmit={(e) => {
-                e.preventDefault();
-                handleAddLanguage();
-              }}
-            >
-              <Form.Group controlId="formNewLanguage">
-                <Form.Label>Add New Language</Form.Label>
-                <Form.Control
-                  type="text"
-                  placeholder="Enter new language"
-                  value={language}
-                  onChange={(e) => setNewLanguage(e.target.value)}
-                />
-              </Form.Group>
-              <Button variant="primary" type="submit">
-                Add Language
-              </Button>
-            </Form>
-            <Table striped bordered hover className="mt-3">
-              <thead>
-                <tr>
-                  <th>Language</th>
-                  <th>Actions</th>
-                </tr>
+          <div>
+            <h2 className="mb-3 fw-bold">🗣️ Dialect Management</h2>
+            <Nav variant="tabs" activeKey={filter} onSelect={(k) => setFilter(k)}>
+              <Nav.Item><Nav.Link eventKey="all">All</Nav.Link></Nav.Item>
+              <Nav.Item><Nav.Link eventKey="pending">Pending</Nav.Link></Nav.Item>
+              <Nav.Item><Nav.Link eventKey="approved">Approved</Nav.Link></Nav.Item>
+              <Nav.Item><Nav.Link eventKey="rejected">Rejected</Nav.Link></Nav.Item>
+            </Nav>
+            <Table hover bordered responsive className="mt-3">
+              <thead className="table-light">
+                <tr><th>Dialect</th><th>Language</th><th>Status</th><th>Actions</th></tr>
               </thead>
               <tbody>
-                {languages.map((lang) => (
-                  <tr key={lang.id}>
-                    <td>{lang.language}</td>
+                {filteredDialects.map((d) => (
+                  <tr key={d._id}>
+                    <td>{d.name}</td>
+                    <td>{d.language}</td>
+                    <td><Badge bg={getBadgeColor(d.status)}>{d.status}</Badge></td>
                     <td>
-                      <Button
-                        size="sm"
-                        variant="danger"
-                        onClick={() => handleDeleteLanguage(lang._id)}
-                      >
-                        Delete
-                      </Button>
+                      <Button size="sm" variant="outline-secondary" className="me-2">View</Button>
+                      {d.status === "pending" && (
+                        <>
+                          <Button size="sm" variant="success" className="me-2" onClick={() => handleUpdateDialectStatus(d._id, "approved")}>Approve</Button>
+                          <Button size="sm" variant="danger" onClick={() => handleUpdateDialectStatus(d._id, "rejected")}>Reject</Button>
+                        </>
+                      )}
+                      <Button size="sm" variant="dark">Delete</Button>
                     </td>
                   </tr>
                 ))}
-                {languages.length === 0 && (
-                  <tr>
-                    <td colSpan="2" className="text-center text-muted py-3">
-                      No languages found.
-                    </td>
-                  </tr>
-                )}
               </tbody>
             </Table>
           </div>
@@ -498,38 +311,35 @@ function AdminDashboard() {
     }
   };
 
-  const handleLogout = async () => {
-    alert("Logged out!");
-    try{
-          await axios.get(EndPoint.LOG_OUT,{withCredentials:true})
-          navigate("/")
-    }catch(err){
-      console.log(err)
-    }
-
-  };
-
-  return (
-    <div className="admin-container">
-      <div className="admin-sidebar">
-        <h3 className="logo">Admin</h3>
-        <ul>
-          <li onClick={() => setActivePage("dashboard")}>Dashboard</li>
-          <li onClick={() => setActivePage("articles")}>Articles</li>
-          <li onClick={() => setActivePage("dialects")}>Dialects</li>
-          <li onClick={() => setActivePage("languages")}>Languages</li>
-
-          <li onClick={handleLogout} className="logout">
-            Logout
+ return (
+    <div className="d-flex admin-wrapper">
+      {/* Sidebar */}
+      <aside className="admin-sidebar shadow-sm">
+        <div className="logo mb-4">⚙️ <span>Admin Panel</span></div>
+        <ul className="nav flex-column gap-2">
+          {["dashboard", "articles", "dialects", "languages"].map((item) => (
+            <li key={item}>
+              <Button
+                variant={activePage === item ? "primary" : "outline-light"}
+                className="w-100 text-start sidebar-btn"
+                onClick={() => setActivePage(item)}
+              >
+                {item.charAt(0).toUpperCase() + item.slice(1)}
+              </Button>
+            </li>
+          ))}
+          <li className="mt-auto">
+            <Button variant="danger" className="w-100 sidebar-btn">Logout</Button>
           </li>
         </ul>
-      </div>
-      <div className="admin-main">
-        <div className="admin-header">
-          <h2>{activePage.replace("-", " ").toUpperCase()}</h2>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-grow-1 p-4 bg-light">
+        <div className="card shadow-sm border-0 p-4 admin-content">
+          {renderContent()}
         </div>
-        <div className="admin-content">{renderContent()}</div>
-      </div>
+      </main>
     </div>
   );
 }

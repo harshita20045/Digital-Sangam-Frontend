@@ -1,55 +1,40 @@
-.admin-container {
-  display: flex;
-  height: 100vh;
-  font-family: sans-serif;
+.admin-wrapper {
+  min-height: 100vh;
 }
 
 .admin-sidebar {
-  width: 200px;
-  background-color: #343a40;
-  color: white;
-  padding: 20px;
+  width: 240px;
+  background: #212529;
+  color: #fff;
+  padding: 1.5rem 1rem;
+  display: flex;
+  flex-direction: column;
 }
 
-.admin-sidebar h3.logo {
-  margin-bottom: 20px;
-  font-size: 22px;
+.admin-sidebar .logo {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: #f8f9fa;
 }
 
-.admin-sidebar ul {
-  list-style: none;
-  padding: 0;
+.sidebar-btn {
+  border-radius: 8px !important;
 }
 
-.admin-sidebar li {
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 4px;
+.sidebar-btn:hover {
+  background: #343a40 !important;
 }
 
-.admin-sidebar li:hover,
-.admin-sidebar li.logout:hover {
-  background-color: #495057;
+.icon-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.25rem;
 }
 
-.admin-sidebar li.logout {
-  margin-top: 30px;
-  color: #ffdddd;
-}
-
-.admin-main {
-  flex-grow: 1;
-  background-color: #f8f9fa;
-  padding: 20px;
-}
-
-.admin-header h2 {
-  margin-bottom: 20px;
-}
-
-.admin-content {
-  background: white;
-  padding: 20px;
-  border-radius: 6px;
-  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+.admin-content h2 {
+  font-size: 1.25rem;
 }

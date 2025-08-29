@@ -16,7 +16,10 @@ function ViewMore() {
   const [loadingAi, setLoadingAi] = useState(false);
 
   const handleAiGenerate = async () => {
-    if (!aiExample) return alert("Please enter a word");
+    if (!aiExample) {
+      alert("Please enter a word to get an AI example.");
+      return;
+    }
     setLoadingAi(true);
     try {
       const res = await axios.post("http://localhost:3000/chat/example", {
@@ -26,14 +29,14 @@ function ViewMore() {
       const rawText = res.data.generatedText || "No example returned";
 
       const examples = rawText
-        .split(/Example \d+:?/i)
+        .split(/Example \d+:?\s*|^- \s*/i)
         .map((e) => e.trim())
         .filter((e) => e.length > 0);
 
       setAiResult(examples);
     } catch (err) {
-      console.error(err);
-      alert("AI generation failed");
+      console.error("AI generation failed:", err);
+      setAiResult("Failed to generate examples. Please try again.");
     } finally {
       setLoadingAi(false);
     }
@@ -44,9 +47,9 @@ function ViewMore() {
       <>
         <Header />
         <div className="container py-5 text-center">
-          <h4 className="text-danger">No dialect data available</h4>
+          <h4 className="text-danger">No dialect data available.</h4>
           <button
-            className="btn btn-outline-primary mt-3"
+            className="btn btn-outline-primary mt-3 px-4 py-2 rounded-pill fw-semibold"
             onClick={() => navigate(-1)}
           >
             ← Go Back
@@ -62,22 +65,17 @@ function ViewMore() {
       <Header />
       <div className="container py-5">
         <button
-          className="btn  mb-4 d-flex align-items-center gap-2"
-          style={{
-            marginBottom: "20px",
-            backgroundColor: "#da5d19ff",
-            height: "40px",
-            padding: "0 12px",
-            borderRadius: "20px",
-            width: "fit-content",
-          }}
-          onClick={() => window.history.back()}
+          className="btn text-white mb-4 d-flex align-items-center gap-2 back-btn fw-semibold shadow-sm"
+          onClick={() => navigate(-1)}
         >
-          <IoArrowBackCircleOutline size={22} /> Back
+          <IoArrowBackCircleOutline size={22} /> Go Back
         </button>
+
         <div className="row g-5 align-items-start">
+          {/* Left Column */}
           <div className="col-lg-8 col-12 mb-4 mb-lg-0">
-            <div className="dialect-card shadow-lg border-0">
+            <div className="dialect-card shadow border-0">
+              {/* Badges */}
               <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                 <span className="badge bg-gradient-primary px-3 py-1 rounded-pill fs-6">
                   {dialect.language?.language || "Unknown"}
@@ -90,19 +88,20 @@ function ViewMore() {
                 </span>
               </div>
 
-              <h1 className="fw-bolder mb-4 display-4 text-primary word-title">
+              {/* Word Title */}
+              <h1 className="fw-bold mb-4 display-5 text-primary word-title">
                 {dialect.word}
               </h1>
 
+              {/* Meaning */}
               <section className="mb-4">
                 <h5 className="fw-semibold mb-3 border-bottom pb-2 text-secondary">
                   Meaning
                 </h5>
-                <div className="row gx-5">
+                <div className="row gx-4">
                   <div className="col-12 col-md-6 mb-2">
                     <div className="p-3 meaning-box shadow-sm">
-                      <strong>English:</strong>{" "}
-                      {dialect.meaning?.english || "—"}
+                      <strong>English:</strong> {dialect.meaning?.english || "—"}
                     </div>
                   </div>
                   <div className="col-12 col-md-6 mb-2">
@@ -113,6 +112,7 @@ function ViewMore() {
                 </div>
               </section>
 
+              {/* Examples */}
               <section className="mb-4">
                 <h5 className="fw-semibold mb-3 border-bottom pb-2 text-secondary">
                   Examples
@@ -122,7 +122,7 @@ function ViewMore() {
                     {dialect.examples.map((ex, idx) => (
                       <li key={idx} className="example-card mb-3">
                         <div className="d-flex align-items-start">
-                          <span className="example-index badge bg-secondary me-3 mt-1">
+                          <span className="example-index badge me-3 mt-1">
                             {idx + 1}
                           </span>
                           <div>
@@ -151,6 +151,7 @@ function ViewMore() {
                 )}
               </section>
 
+              {/* Author */}
               {dialect.author && (
                 <section className="mb-4">
                   <h5 className="fw-semibold mb-3 border-bottom pb-2 text-secondary">
@@ -171,6 +172,7 @@ function ViewMore() {
                 </section>
               )}
 
+              {/* Timestamps */}
               <section>
                 <h5 className="fw-semibold mb-3 border-bottom pb-2 text-secondary">
                   Timestamps
@@ -193,20 +195,21 @@ function ViewMore() {
             </div>
           </div>
 
+          {/* Right Column - AI */}
           <div className="col-lg-4 col-12">
-            <div className="ai-card shadow-lg border-0 px-4 py-4">
+            <div className="ai-card shadow border-0 px-4 py-4">
               <div className="fw-bold mb-4 d-flex align-items-center gap-2 text-ai-orange fs-5">
                 <FaRobot /> <span>AI Suggestions</span>
               </div>
               <input
                 type="text"
-                className="form-control mb-3 input-focus ai-input"
+                className="form-control mb-3 ai-input"
                 placeholder="Type a word to get AI example..."
                 value={aiExample}
                 onChange={(e) => setAiExample(e.target.value)}
               />
               <button
-                className="btn btn-ai-orange w-100 mb-4 fs-6"
+                className="btn btn-ai-orange w-100 mb-4 fs-6 fw-semibold rounded-pill"
                 onClick={handleAiGenerate}
                 disabled={loadingAi}
               >
@@ -222,7 +225,7 @@ function ViewMore() {
               {aiResult && (
                 <div className="mt-2 p-3 bg-light rounded ai-result-box">
                   <strong>AI Example:</strong>
-                  <ul className="ps-3">
+                  <ul className="ps-3 mb-0">
                     {Array.isArray(aiResult) ? (
                       aiResult.map((res, i) => (
                         <li key={i} className="mb-1">
@@ -243,46 +246,37 @@ function ViewMore() {
       <Footer />
 
       <style>{`
-        body { background: #fef6f0 !important; font-family: 'Inter', sans-serif; }
+        body { background: #fefaf7 !important; font-family: 'Inter', sans-serif; }
         .dialect-card, .ai-card {
           background: #fff;
-          border-radius: 18px;
-          padding: 2.2rem 2.5rem;
-          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, .10);
+          border-radius: 16px;
+          padding: 2rem;
+          box-shadow: 0 6px 18px rgba(0,0,0,.08);
         }
         .dialect-card {
-          border-left: 6px solid #f64100;
-          transition: box-shadow 0.2s;
+          border-left: 5px solid #f64100;
         }
-        .dialect-card:hover {
-          box-shadow: 0 16px 40px 0 rgba(31,38,135,.14);
-        }
-        .word-title {
-          color: #f64100 !important;
-          letter-spacing: 1px;
-        }
+        .word-title { color: #f64100 !important; letter-spacing: 0.5px; }
         .meaning-box {
-          background: #f8fafc;
-          border: 1.5px solid #eaf0f6;
+          background: #f9fafb;
+          border: 1px solid #e5e7eb;
           border-radius: 10px;
         }
         .example-card {
-          background: linear-gradient(90deg, #ffe5dc 0%, #f8fafc 80%);
-          border-radius: 12px;
-          padding: 16px 20px;
+          background: #fff9f7;
+          border-radius: 10px;
+          padding: 14px 18px;
+          border: 1px solid #ffe0d5;
           transition: 0.3s;
-          border: 1px solid #ffd2c2;
         }
-        .example-card:hover {
-          transform: scale(1.025);
-          box-shadow: 0 6px 18px rgba(246,65,0,.09);
-        }
+        .example-card:hover { transform: scale(1.02); }
         .example-index {
-          font-size: 1rem;
-          min-width: 2rem;
+          font-size: 0.9rem;
+          min-width: 1.8rem;
           text-align: center;
-          background: #ffd2c2 !important;
+          background: #ffd7c5 !important;
           color: #f64100 !important;
+          border-radius: 6px !important;
         }
         .author-box {
           background: #fff4ef;
@@ -290,63 +284,45 @@ function ViewMore() {
           border: 1px solid #ffe5dc;
         }
         .ai-card {
-          min-width: 0;
-          height: fit-content;
-          border-left: 6px solid #f6410025;
-          background: linear-gradient(135deg, #f8fafc 70%, #ffe5dc 100%);
+          border-left: 5px solid #f6410020;
+          background: linear-gradient(135deg, #fafafa 70%, #fff5f1 100%);
         }
         .ai-input:focus {
           border-color: #f64100;
           box-shadow: 0 0 0 0.2rem rgba(246,65,0,0.18);
         }
         .btn-ai-orange {
-          background: linear-gradient(90deg, #f64100 0%, #ff7a3d 100%);
+          background: linear-gradient(90deg, #f64100, #ff7a3d);
           border: none;
           color: #fff;
-          transition: 0.18s;
         }
-        .btn-ai-orange:hover, .btn-ai-orange:focus {
-          background: linear-gradient(90deg, #ff7a3d 0%, #f64100 100%);
-          filter: brightness(1.15);
-          color: #fff;
+        .btn-ai-orange:hover {
+          background: linear-gradient(90deg, #ff7a3d, #f64100);
+          filter: brightness(1.1);
         }
-        .ai-result-box {
-          border: 1.5px solid #ffe5dc;
-        }
-        .status-badge {
-          color: #fff !important;
-          font-weight: 600;
-          border: none;
-        }
+        .ai-result-box { border: 1.5px solid #ffe5dc; }
+        .status-badge { font-weight: 600; }
         .status-approved {
-          background: linear-gradient(90deg, #f64100 0%, #ff7a3d 100%) !important;
+          background: linear-gradient(90deg, #f64100, #ff7a3d) !important;
+          color: #fff !important;
         }
         .status-pending {
-          background: linear-gradient(90deg, #ffe066 0%, #ffd43b 100%) !important;
+          background: linear-gradient(90deg, #ffe066, #ffd43b) !important;
           color: #6c5100 !important;
         }
-        .status-rejected, .status-other {
-          background: linear-gradient(90deg, #fc5c7d 0%, #fdaf7b 100%) !important;
+        .status-rejected {
+          background: linear-gradient(90deg, #fc5c7d, #fdaf7b) !important;
+          color: #fff !important;
         }
-        .text-ai-orange {
-          color: #f64100 !important;
+        .text-ai-orange { color: #f64100 !important; }
+        .back-btn {
+          background-color: #f64100 !important;
+          height: 42px;
+          padding: 0 14px;
+          border-radius: 22px;
+          transition: 0.2s;
         }
-        @media (max-width: 991.98px) {
-          .dialect-card, .ai-card {
-            padding: 1.5rem 1.2rem;
-          }
-          .word-title {
-            font-size: 2rem;
-          }
-        }
-        @media (max-width: 767.98px) {
-          .dialect-card, .ai-card {
-            padding: 1.2rem 0.5rem;
-          }
-          .word-title {
-            font-size: 1.5rem;
-          }
-        }
+        .back-btn:hover { background-color: #ff7a3d !important; transform: translateY(-2px); }
       `}</style>
     </>
   );

@@ -4,9 +4,6 @@ import axios from "axios";
 import { toast,ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import EndPoint from "../../apis/EndPoint";
-import { IoMdMail } from "react-icons/io";
-import { RiLockPasswordFill } from "react-icons/ri";
-
 
 
 function AdminLogin() {
@@ -36,7 +33,7 @@ function AdminLogin() {
       toast.success("Admin login successful");
 
       setTimeout(() => {
-        navigate("/admin-dashboard");
+        navigate("/admin/dashboard");
       }, 1000);
     } catch (error) {
       const msg = error.response?.data?.error || "Login failed";
@@ -61,8 +58,7 @@ function AdminLogin() {
             <label>Email Address</label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="bi bi-envelope"><IoMdMail />
-</i>
+                <i className="bi bi-envelope"></i>
               </span>
               <input
                 type="email"
@@ -77,9 +73,7 @@ function AdminLogin() {
             <label>Password</label>
             <div className="input-group">
               <span className="input-group-text">
-                <i className="bi bi-lock"><RiLockPasswordFill />
-
-</i>
+                <i className="bi bi-lock"></i>
               </span>
               <input
                 type="password"

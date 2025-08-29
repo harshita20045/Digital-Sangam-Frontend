@@ -3,6 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import { getCurrentUser } from "../auth/Auth";
 import axios from "axios";
 import EndPoint from "../../apis/EndPoint";
+import Header from "../Header/Header";
 
 export default function SubmitDialectPage() {
   let user = getCurrentUser();
@@ -194,6 +195,8 @@ const handleSubmit = async (e) => {
 
 
   return (
+    <>
+    <Header/>
     <div
       className="container-fluid py-5"
       style={{ backgroundColor: "#fef6f0" }}
@@ -451,5 +454,6 @@ const handleSubmit = async (e) => {
         </div>
       </form>
     </div>
+    </>
   );
 }

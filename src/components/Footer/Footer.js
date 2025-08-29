@@ -8,6 +8,7 @@ import {
   FaYoutube,
 } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
@@ -20,9 +21,12 @@ function Footer() {
             Preserving and celebrating India's rich cultural heritage through digital innovation.
             Connecting communities, languages, and traditions for future generations.
           </p>
-          <p className="text-muted"><IoMdMail className="me-2" /> contact@digitalsangam.org</p>
-          <p className="text-muted"><FaPhoneAlt className="me-2" /> +91 7470361548</p>
-          <p className="text-muted"><FaLocationDot className="me-2" /> Indore, India</p>
+          <Link  to="https://mail.google.com/" style={{ textDecoration: 'none' }} className="text-muted"><IoMdMail className="me-2" /> contact@digitalsangam.org</Link>
+          <br/>
+          <Link to="tel:+917470361548" style={{ textDecoration: 'none' }} className="text-muted"><FaPhoneAlt className="me-2" /> +91 7470361548</Link>
+          <br/>
+          <Link to="#" style={{ textDecoration: 'none' }} className="text-muted"><FaLocationDot className="me-2" /> Indore, India</Link>
+          <br/>
           <div className="d-flex gap-2 mt-3">
             {[FaFacebookF, FaInstagram, FaTwitter, FaYoutube].map((Icon, idx) => (
               <div key={idx} className="rounded-circle bg-white p-2 text-muted shadow-sm" style={{ width: 36, height: 36, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>

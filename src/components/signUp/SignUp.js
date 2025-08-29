@@ -48,9 +48,25 @@ function SignUp() {
   };
 
   return (
-    <div className="container d-flex justify-content-center mt-4 align-items-center vh-100">
+    
+    <div className="container d-flex justify-content-center mt-5 align-items-center vh-100">
+      <button
+        className="btn btn-link position-absolute"
+        style={{
+          top: 20,
+          left: 20,
+          textDecoration: "none",
+          color: "#dc2626",
+          fontWeight: "500",
+        }}
+        onClick={() => navigate(-1)}
+      >
+        &larr; Back
+      </button>
+
       {isLoading?(<CircularProgress />):(
       <div className="col-md-5 col-sm-10 col-12 rounded-4">
+       
         <div className="text-center mb-3">
           <div
             style={{
