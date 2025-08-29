@@ -168,7 +168,7 @@ function SignUp() {
                 type="button"
                 className="btn btn-outline-dark w-100 mt-3"
                 onClick={() =>
-                  (window.location.href = "https://digital-sangam-backend.onrender.com/auth/google")
+                  (window.location.href = "https://digital-sangam-backend.onrender.com/user/auth/google")
                 }
               >
                 <img
