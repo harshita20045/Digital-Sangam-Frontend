@@ -75,11 +75,11 @@ function SignUp() {
 
     try {
       setIsLoading(true);
-     let user = await axios.get(`${EndPoint.GET_USER_BY_EMAIL}/${formData.email}`);
+    //  let user = await axios.get(`${EndPoint.GET_USER_BY_EMAIL}/${formData.email}`);
 
-      if(user){
-        toast.error("User Already Exist ")
-      }
+    //   if(user){
+    //     toast.error("User Already Exist ")
+    //   }
       let res = await axios.post(EndPoint.SIGN_UP, formData);
       console.log(res.data);
       setVerify(false);
@@ -191,7 +191,7 @@ function SignUp() {
                 <small className="text-danger">{errors.contact}</small>
               </div>
 
-              {/* Password with eye toggle */}
+            
               <div className="mb-3">
                 <label className="form-label fw-semibold">Password</label>
                 <div className="input-group">

@@ -6,16 +6,17 @@ import Join from "./join/Join";
 import Offers from "./Offers/Offers";
 import Why from "./Why/Why";
 
-function Home(){
-
-  return <>
-  <Header/>
- <Digital/>
-  <Offers/>
-   <Experience/>
-  <Why/>
- <Join/>
-   <Footer/> 
-  </>
+function Home() {
+  return (
+    <>
+      <Header />
+      <Digital />
+      <Offers />
+      <Experience />
+      <Why />
+      <Join />
+      <Footer />
+    </>
+  );
 }
 export default Home;
