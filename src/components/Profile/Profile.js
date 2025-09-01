@@ -116,7 +116,7 @@ function Profile() {
 
           <div className="card-body pt-0 px-4">
             <div className="row g-4">
-            
+              {/* Contact Section */}
               {hasContactInfo && (
                 <div className="col-lg-4 col-md-6">
                   <div className="card border-0 rounded-4 h-100 p-3 shadow-sm">

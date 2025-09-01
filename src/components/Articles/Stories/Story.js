@@ -88,7 +88,7 @@ function Story() {
 
   return (
     <>
-      {/* Header */}
+   
       <div
         className="py-5 text-center mb-4"
         style={{ background: "linear-gradient(to right, #fff7f0, #fff2e5)" }}
@@ -100,7 +100,6 @@ function Story() {
         </p>
       </div>
 
-      {/* Search & Filters */}
       <div
         className="container mb-3 sticky-top bg-white py-3"
         style={{ zIndex: 999 }}
@@ -269,7 +268,7 @@ function Story() {
                     <div className="d-flex justify-content-between small text-muted">
                       <span>
                         <PermIdentityIcon style={{ height: "20px", width: "20px" }} />{" "}
-                        {articles.author.name}
+                        {articles.author?.name || "name"}
                       </span>
                       <span>
                         <CalendarTodayIcon style={{ height: "20px", width: "20px" }} />{" "}
@@ -283,7 +282,7 @@ function Story() {
           )}
         </div>
 
-        {/* Pagination */}
+
         <div className="d-flex justify-content-center mt-4 flex-wrap gap-2">
           {[...Array(totalPages)].map((_, idx) => (
             <button

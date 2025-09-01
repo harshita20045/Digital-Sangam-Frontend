@@ -32,6 +32,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<SignUp />} />
         <Route path="/articles" element={<Article />} />
+        <Route path="/explore-dialects" element={<Dialect/>}/>
         <Route path="/profile" element={<Auth><Profile /></Auth>} />
         <Route path="/edit-profile" element={<Auth><EditProfile /></Auth>} />
         <Route path="/dialects" element={<Dialect />} />

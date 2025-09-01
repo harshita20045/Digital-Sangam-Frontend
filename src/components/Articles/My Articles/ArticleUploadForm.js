@@ -21,7 +21,7 @@ function ArticleUploadForm() {
     shortDescription: "",
     readTime: "",
     category: "",
-    author: user._id,
+    author: user.id,
     images: [],
   });
   function handleAiOption(option) {
@@ -116,10 +116,13 @@ function ArticleUploadForm() {
       for (let key in formData) {
         data.append(key, formData[key]);
       }
+      console.log("Form Data:", formData);
+      
       imageFiles.forEach((file) => data.append("images", file));
 
       const res = await axios.post("http://localhost:3000/article", data, {
         headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
       });
 
       alert("Article uploaded!");

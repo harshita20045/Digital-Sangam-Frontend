@@ -65,17 +65,25 @@ function ViewMore() {
       <Header />
       <div className="container py-5">
         <button
-          className="btn text-white mb-4 d-flex align-items-center gap-2 back-btn fw-semibold shadow-sm"
-          onClick={() => navigate(-1)}
-        >
-          <IoArrowBackCircleOutline size={22} /> Go Back
-        </button>
+              className="btn btn-link position-absolute"
+              style={{
+                top: 20,
+                left: 20,
+                marginTop:"120px",
+                textDecoration: "none",
+                color: "#dc2626",
+                fontWeight: "500",
+              }}
+              onClick={() => navigate(-1)}
+            >
+              &larr; Back
+            </button>
 
         <div className="row g-5 align-items-start">
-          {/* Left Column */}
+         
           <div className="col-lg-8 col-12 mb-4 mb-lg-0">
             <div className="dialect-card shadow border-0">
-              {/* Badges */}
+              
               <div className="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                 <span className="badge bg-gradient-primary px-3 py-1 rounded-pill fs-6">
                   {dialect.language?.language || "Unknown"}
@@ -88,12 +96,11 @@ function ViewMore() {
                 </span>
               </div>
 
-              {/* Word Title */}
               <h1 className="fw-bold mb-4 display-5 text-primary word-title">
                 {dialect.word}
               </h1>
 
-              {/* Meaning */}
+             
               <section className="mb-4">
                 <h5 className="fw-semibold mb-3 border-bottom pb-2 text-secondary">
                   Meaning
@@ -112,7 +119,7 @@ function ViewMore() {
                 </div>
               </section>
 
-              {/* Examples */}
+            
               <section className="mb-4">
                 <h5 className="fw-semibold mb-3 border-bottom pb-2 text-secondary">
                   Examples

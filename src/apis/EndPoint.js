@@ -25,6 +25,7 @@ export default {
   UPDATE_ARTICLE_STATUS: BASE_URL + "/admin/update-articles",
   LOG_OUT:BASE_URL+"/user/logout",
   ADD_DIALECT:BASE_URL+"/dialect/add",
-  LIKE_ARTICLE: BASE_URL + "/like/add",
-  GET_ARTICLE_LIKES: BASE_URL + "/like",
+  LIKE_ARTICLE:BASE_URL+"/article/like",
+  GET_USER_BY_EMAIL:BASE_URL+"/user/search-email",
+  GET_ARTICLE_LIKES: BASE_URL + "/article/likes"
 };

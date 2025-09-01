@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Join() {
   return (
     <>
@@ -11,12 +13,10 @@ function Join() {
           your journey of discovery today.
         </p>
         <div>
-          <button className="btn btn-light" style={{ color: "#f64100" }}>
+          <Link to="/edit-profile" className="btn btn-light" style={{ color: "#f64100" }}>
             Create Your Profile
-          </button>
-          <button className="btn btn-light ml-2 " style={{ color: "#f64100" }}>
-            Explore Now
-          </button>
+          </Link>
+         
         </div>
       </div>
     </>

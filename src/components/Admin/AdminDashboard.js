@@ -217,8 +217,8 @@ function AdminDashboard() {
                       <tr key={article._id}>
                         <td>{article.title}</td>
                         <td>
-                          <div>{article.author.name}</div>
-                          <small className="text-muted">{article.author.email}</small>
+                          <div>{article.author?.name}</div>
+                          <small className="text-muted">{article.author?.email}</small>
                         </td>
                         <td><Badge bg={getBadgeColor(article.status)}>{article.status}</Badge></td>
                         <td className="text-end">

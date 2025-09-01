@@ -34,21 +34,30 @@ function ArticleDetail() {
   const [liked, setLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(article?.likes?.length || 0);
 
-
-
   const articleUrl = `https://digital-sangam-frontend.onrender.com/article/${article._id}`;
 
   useEffect(() => {
     const fetchArticleLikes = async () => {
-      let response = await axios.get(`${EndPoint.GET_ARTICLE_LIKES}/${article._id}`);
-      console.log(response.data.numberOfLikes);
-      setLiked(response.data.liked);
-      setLikeCount(response.data.numberOfLikes);
+      try {
+        const currentUser = getCurrentUser();
+        const userId = currentUser?.id;
+        if (!currentUser) return;
+
+        const response = await axios.get(
+          `${EndPoint.GET_ARTICLE_LIKES}/${article._id}?userId=${userId}`,
+          { withCredentials: true }
+        );
+
+        setLiked(response.data.liked);
+        setLikeCount(response.data.numberOfLikes);
+      } catch (err) {
+        console.error("Failed to fetch like status:", err);
+      }
     };
     fetchArticleLikes();
   }, [article]);
 
-    if (!article) {
+  if (!article) {
     return <div className="container mt-5">No article data found.</div>;
   }
   const handleDownloadPdf = () => {
@@ -65,31 +74,26 @@ function ArticleDetail() {
 
   const handleLikeToggle = async () => {
     try {
-      const currentUserId = getCurrentUser()?._id;
-      if (!currentUserId) return alert("Please login to like articles.");
-
-      if (liked) {
-        // Unlike
-        await axios.post(`${EndPoint.UNLIKE_ARTICLE}`, {
-          article: article._id,
-          user: currentUserId,
-        });
-        setLikeCount((prev) => prev - 1);
-        setLiked(false);
-      } else {
-        
-        const response = await axios.post(`${EndPoint.LIKE_ARTICLE}`, {
-          articleId: article._id,
-          userId: currentUserId,
-        });
-        setLikeCount(response.data.numberOfLikes);
-        setLiked(true);
+      const currentUser = getCurrentUser();
+      const userId = currentUser?.id;
+      console.log(userId);
+      if (!currentUser) {
+        return alert("Please login to like articles.");
       }
+      console.log(article._id);
+      const response = await axios.post(
+        `${EndPoint.LIKE_ARTICLE}/${article._id}`,
+        { userId: currentUser.id },
+        { withCredentials: true }
+      );
+
+      setLikeCount(response.data.numberOfLikes);
+      setLiked(response.data.liked);
     } catch (err) {
       console.error("Failed to toggle like:", err);
+      alert("Failed to update like status. Please try again.");
     }
   };
-
   return (
     <>
       <Header />
@@ -112,7 +116,6 @@ function ArticleDetail() {
             style={{ width: "100%", maxHeight: "450px", objectFit: "cover" }}
           />
 
-     
           <div className="text-center mb-4">
             <span className="badge bg-dark px-3 py-2 mb-2 fs-6">
               {article.category || "Culture"}
@@ -122,7 +125,6 @@ function ArticleDetail() {
             </h1>
           </div>
 
-        
           <div className="d-flex flex-wrap justify-content-center text-muted small mb-4 gap-4">
             <div className="d-flex align-items-center gap-1">
               <AccountCircleIcon /> {article.author?.name || "Author"}
@@ -135,7 +137,6 @@ function ArticleDetail() {
             </div>
           </div>
 
-        
           <div className="d-flex justify-content-center gap-3 mb-4 flex-wrap">
             <button
               className="btn btn-outline-danger btn-sm d-flex align-items-center gap-1"
@@ -155,7 +156,6 @@ function ArticleDetail() {
               <DownloadIcon /> Download
             </button>
 
-          
             <div className="d-flex gap-2 mt-2 mt-md-0">
               <FacebookShareButton url={articleUrl} quote={article.title}>
                 <FacebookIcon size={36} round />
@@ -171,13 +171,22 @@ function ArticleDetail() {
               </LinkedinShareButton>
             </div>
           </div>
-           <div className="short-description mb-3">{article.shortDescription}</div>
+          <div className="short-description mb-3">
+            {article.shortDescription}
+          </div>
 
           <div
             id="article-content"
             className="article-content"
-            style={{ lineHeight: "1.8", fontSize: "1.1rem", color: "#333", textAlign: "justify" }}
-            dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content) }}
+            style={{
+              lineHeight: "1.8",
+              fontSize: "1.1rem",
+              color: "#333",
+              textAlign: "justify",
+            }}
+            dangerouslySetInnerHTML={{
+              __html: DOMPurify.sanitize(article.content),
+            }}
           />
         </div>
       </div>

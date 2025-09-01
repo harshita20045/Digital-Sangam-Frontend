@@ -25,10 +25,13 @@ function MyDialects() {
 
   const loadDialects = async () => {
     const user = getCurrentUser();
-    if (!user || !user._id) return;
+    if (!user || !user.id) return;
 
     try {
-      const res = await axios.get(`${EndPoint.AUTHOR_DIALECT}/${user._id}`);
+      const res = await axios.get(`${EndPoint.AUTHOR_DIALECT}/${user.id}`, {
+        withCredentials: true,
+      });
+      console.log(res.data.dialects)
       setDialects(res.data.dialects || []);
     } catch (err) {
       console.error("Failed to load dialects:", err);

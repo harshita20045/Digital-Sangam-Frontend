@@ -22,7 +22,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import { CircularProgress } from "@mui/material";
 
-// Options for the menu
+
 const options = ["Edit", "Delete"];
 const ITEM_HEIGHT = 40;
 
@@ -83,14 +83,15 @@ function MyArticles() {
 
   const loadArticles = async () => {
     const user = getCurrentUser();
-    if (!user?._id) {
+     console.log(user);
+    if (!user?.id) {
       console.warn("User not logged in or invalid");
       setLoadingArticles(false);
       return;
     }
     setLoadingArticles(true);
     try {
-      const res = await axios.get(`${EndPoint.AUTHOR_ARTICLE}/${user._id}`);
+      const res = await axios.get(`${EndPoint.AUTHOR_ARTICLE}/${user.id}`);
       setArticles(res.data);
     } catch (err) {
       console.error("Failed to load articles:", err);

@@ -6,212 +6,103 @@ import Tooltip from "@mui/material/Tooltip";
 import EndPoint, { BASE_URL } from "../../apis/EndPoint";
 import axios from "axios";
 import ArticleIcon from "@mui/icons-material/Article";
-import RecordVoiceOverIcon from '@mui/icons-material/RecordVoiceOver';
+import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 
 function Header() {
   let navigate = useNavigate();
   let user = getCurrentUser();
-  //  console.log(user.profile.profileImage)
+
   const handleLogOut = async () => {
     try {
       await axios.get(EndPoint.LOG_OUT, { withCredentials: true });
-      sessionStorage.setItem("current-user", "");
       sessionStorage.clear();
+      localStorage.removeItem("token");
       navigate("/");
     } catch (error) {
       console.log(error);
     }
   };
+
   return (
-    <>
-      <div
-        className="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3 mb-2 rounded d-flex justify-content-evenly align-items-center "
-        style={{ position: "sticky", top: "0", zIndex: "100" }}
+    <div
+      className="navbar navbar-expand-lg navbar-light bg-white shadow-sm p-3 mb-2 rounded"
+      style={{ position: "sticky", top: "0", zIndex: "100" }}
+    >
+      
+      <Link to="/" className="navbar-brand d-flex align-items-center">
+        <img src={logo} alt="Logo" style={{ width: "180px", height: "auto" }} />
+      </Link>
+
+      <button
+        className="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
       >
-        <img
-          src={logo}
-          alt="Logo"
-          className="navbar-brand  ml-5"
-          style={{ width: "200px", height: "auto" }}
-        />
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse ml-5" id="navbarNav">
-          <ul
-            className="navbar-nav ml-5 d-flex justify-content-center align-items-center gap-4"
-            style={{ color: "#000000" }}
-          >
-            <li className="nav-item">
-              <Link
-                className="nav-link text-dark"
-                style={{
-                  color: "black",
-                  textDecoration: "none",
-                  fontWeight: 500,
-                  transition: "color 0.2s",
-                }}
-                to="/"
-              >
-                Home
-              </Link>
-            </li>
+        <span className="navbar-toggler-icon"></span>
+      </button>
 
-            <li className="nav-item">
+      <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul className="navbar-nav gap-4">
+          {["Home", "About", "Explore Dialects", "Articles", "Contact", "Help"].map((item, i) => (
+            <li key={i} className="nav-item">
               <Link
-                className="nav-link text-dark"
-                style={{
-                  color: "black",
-                  textDecoration: "none",
-                  fontWeight: 500,
-                  transition: "color 0.2s",
-                }}
-                to="/about"
+                className="nav-link fw-medium text-dark"
+                style={{ fontSize: "14px" }}
+                to={item === "Home" ? "/" : `/${item.toLowerCase().replace(" ", "-")}`}
               >
-                About
+                {item}
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link text-dark"
-                style={{
-                  color: "black",
-                  textDecoration: "none",
-                  fontWeight: 500,
-                  transition: "color 0.2s",
-                }}
-                to="/dialects"
-              >
-                Explore Dialects
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link text-dark"
-                style={{
-                  color: "black",
-                  textDecoration: "none",
-                  fontWeight: 500,
-                  transition: "color 0.2s",
-                }}
-                to="/articles"
-              >
-                Articles
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link text-dark"
-                style={{
-                  color: "black",
-                  textDecoration: "none",
-                  fontWeight: 500,
-                  transition: "color 0.2s",
-                }}
-                to="/contact"
-              >
-                Contact
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                className="nav-link text-dark"
-                style={{
-                  color: "black",
-                  textDecoration: "none",
-                  fontWeight: 500,
-                  transition: "color 0.2s",
-                }}
-                to="/help"
-              >
-                Help
-              </Link>
-            </li>
-          </ul>
+          ))}
+        </ul>
+      </div>
+
+
+      {!isUserExist() ? (
+        <div className="d-flex gap-2">
+          <Link className="btn btn-dark btn-sm fw-semibold" to="/login">
+            Login
+          </Link>
+          <Link className="btn btn-dark btn-sm fw-semibold" to="/sign-up">
+            Sign Up
+          </Link>
         </div>
-        {!isUserExist() && (
-          <div className="d-flex gap-3">
-            <Link
-              className="btn btn-dark ml-2 fw-semibold text-center"
-              style={{ height: "35px", fontSize: "15px" }}
-              to="/login"
-            >
-              Login
-            </Link>
-
-            <Link
-              className="btn btn-dark ml-2 fw-semibold"
-              style={{ height: "35px", fontSize: "15px" }}
-              to="/sign-up"
-            >
-              Sign Up
-            </Link>
-          </div>
-        )}
-        {isUserExist() && (
-          <div className="d-flex gap-2">
-            <Link
-              className="fw-semibold fs-6 me-4"
-              style={{
-                color: "black",
-                textDecoration: "none",
-                marginTop: "3px",
-              }}
-              to="/my-articles"
-            >
-              <ArticleIcon style={{ color: "#f64100" }} className="me-1" />
-              My Articles
-            </Link>{" "}
-            <Link
-              className="fw-semibold fs-6 me-4"
-              style={{
-                color: "black",
-                textDecoration: "none",
-                marginTop: "3px",
-              }}
-              to="/my-dialects"
-            >
-              <RecordVoiceOverIcon style={{ color: "#f64100" }} className="mb-2 me-1" />
-              My dialects
-            </Link>
+      ) : (
+        <div className="d-flex align-items-center gap-3">
+          <Link className="d-flex align-items-center text-dark fw-semibold" to="/my-articles" style={{ textDecoration: "none",fontSize:"14px" }}>
+            <ArticleIcon style={{ color: "#f64100", marginRight: "4px" }} />
+            My Articles
+          </Link>
+          <Link className="d-flex align-items-center text-dark fw-semibold" to="/my-dialects" style={{ textDecoration: "none"  ,fontSize:"14px" }}>
+            <RecordVoiceOverIcon style={{ color: "#f64100", marginRight: "4px" }} />
+            My Dialects
+          </Link>
+          <Link to="/profile" className="d-flex align-items-center  text-dark fw-semibold" style={{ textDecoration: "none" , fontSize:"14px" }}>
             <img
               src={
-                `${BASE_URL}/profile/${user.profile.profileImage}` ||
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCHU5JIkqfD2z1KMc4c1nW4zdArnxBM3cCcQ&s"
+                user?.profile?.profileImage
+                  ? `${BASE_URL}/profile/${user.profile.profileImage}`
+                  : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCHU5JIkqfD2z1KMc4c1nW4zdArnxBM3cCcQ&s"
               }
-              style={{ borderRadius: "50%", height: "30px", width: "30px" }}
+              alt="profile"
+              className="rounded-circle me-2"
+              style={{ height: "30px", width: "30px", objectFit: "cover"}}
             />
-            <Link
-              className="fw-semibold fs-6 me-4"
-              style={{
-                color: "black",
-                textDecoration: "none",
-                marginTop: "3px",
-              }}
-              to="/profile"
-            >
             Profile
-            </Link>
-          </div>
-        )}
-        {isUserExist() && (
+          </Link>
           <Tooltip title="Log Out">
             <LogoutIcon
-              style={{  height: "30px", width: "30px", color: "#f64100" }}
+              style={{ height: "28px", width: "28px", color: "#f64100", cursor: "pointer" }}
               onClick={handleLogOut}
             />
           </Tooltip>
-        )}
-      </div>
-    </>
+        </div>
+      )}
+    </div>
   );
 }
 
