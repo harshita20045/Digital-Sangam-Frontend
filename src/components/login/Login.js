@@ -60,7 +60,7 @@ function Login() {
       }
 
       toast.success(response.data.message);
-      navigate(-1);
+      navigate("/");
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.error || "Something went wrong");

@@ -72,7 +72,7 @@ function EditProfile() {
       const token = sessionStorage.getItem("token");
 
       const res = await axios.patch(
-        `${EndPoint.CREATE_PROFILE}/${user._id}`,
+        `${EndPoint.CREATE_PROFILE}/${user.id}`,
         form,
         {
           headers: {

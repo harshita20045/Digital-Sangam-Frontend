@@ -11,6 +11,7 @@ import RecordVoiceOverIcon from "@mui/icons-material/RecordVoiceOver";
 function Header() {
   let navigate = useNavigate();
   let user = getCurrentUser();
+  console.log(user?.profile?.profileImage)
 
   const handleLogOut = async () => {
     try {
@@ -85,7 +86,7 @@ function Header() {
             <img
               src={
                 user?.profile?.profileImage
-                  ? `${BASE_URL}/profile/${user.profile.profileImage}`
+                  ? `${BASE_URL}/profile/${user?.profile?.profileImage}`
                   : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCHU5JIkqfD2z1KMc4c1nW4zdArnxBM3cCcQ&s"
               }
               alt="profile"

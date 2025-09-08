@@ -16,7 +16,7 @@ export default function SubmitDialectPage() {
     word: "",
     hindiMeaning: "",
     englishMeaning: "",
-    author: user?._id || "",
+    author: user?.id || "",
   });
 
   const [examples, setExamples] = useState([
@@ -44,7 +44,7 @@ export default function SubmitDialectPage() {
 
   const loadLanguages = async () => {
     const user = getCurrentUser();
-    if (!user || !user._id) {
+    if (!user || !user.id) {
       console.warn("User not logged in");
       return;
     }
@@ -154,7 +154,7 @@ export default function SubmitDialectPage() {
         fd.append("audio", formData.audioFile);
       }
 
-      // examples array
+    
       examples.forEach((ex, idx) => {
         fd.append(`examples[${idx}][exampleSentence]`, ex.exampleSentence);
         fd.append(
@@ -169,6 +169,7 @@ export default function SubmitDialectPage() {
 
       await axios.post(EndPoint.ADD_DIALECT, fd, {
         headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true,
       });
 
       showToast(

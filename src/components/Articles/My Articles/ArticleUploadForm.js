@@ -21,7 +21,7 @@ function ArticleUploadForm() {
     shortDescription: "",
     readTime: "",
     category: "",
-    author: user.id,
+    author: user?.id || "",
     images: [],
   });
   function handleAiOption(option) {
